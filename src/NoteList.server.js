@@ -10,9 +10,9 @@ import {fetch} from 'react-fetch';
 
 // import {db} from './db.server';
 import SidebarNote from './SidebarNote';
-import { PrismaClient } from '@prisma/client' 
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export default async function NoteList({searchText}) {
   // const notes = fetch('http://localhost:4000/notes').json();
