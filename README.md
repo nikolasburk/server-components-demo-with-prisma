@@ -1,7 +1,6 @@
 # React Server Components Demo
 
 * [What is this?](#what-is-this)
-* [When will I be able to use this?](#when-will-i-be-able-to-use-this)
 * [Setup](#setup)
 * [DB Setup](#db-setup)
   + [Step 1. Create the Database](#step-1-create-the-database)
@@ -15,29 +14,71 @@
 
 ## What is this?
 
-This is a demo app built with Server Components, an experimental React feature. **We strongly recommend [watching our talk introducing Server Components](https://reactjs.org/server-components) before exploring this demo.** The talk includes a walkthrough of the demo code and highlights key points of how Server Components work and what features they provide.
+This is a **fork ot the official Server Components demo that uses Prisma for database access instead of raw SQL**. 
 
-## When will I be able to use this?
-
-Server Components are an experimental feature and **are not ready for adoption**. For now, we recommend experimenting with Server Components via this demo app. **Use this in your projects at your own risk.**
+> **Note**: If you haven't done so yet, be sure to [watch the talk introducing Server Components](https://reactjs.org/server-components) before exploring this demo. The talk includes a walkthrough of the demo code and highlights key points of how Server Components work and what features they provide.
 
 ## Setup
 
 You will need to have nodejs >=14.9.0 in order to run this demo. [Node 14 LTS](https://nodejs.org/en/about/releases/) is a good choice!
 
-  ```
-  npm install
-  npm start
-  ```
+### 1. Clone the repo and install dependencies
 
-(Or `npm run start:prod` for a production build.)
+To get started, clone this repo and install npm dependencies:
+
+```
+git clone git@github.com:nikolasburk/server-components-demo-with-prisma.git
+cd server-components-demo-with-prisma
+npm install
+```
+
+### 2. Create the database schema with Prisma Migrate
+
+For this section, you need a PostgeSQL database server running somewhere! If you're unsure about how to set up a database, you can follow the instructions for your OS [here](https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database).
+
+Once you have your database PostgreSQL server running, adjust the `DATABASE_URL` environment variable in the [`.env`](./env) file to match your [connection URL](https://www.prisma.io/docs/concepts/database-connectors/postgresql/#connection-url), for example:
+
+```
+# .env
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/notesapi?schema=public"
+```
+
+In this case, you need to replace the placeholders that are spell in uppercase letters:
+
+- `USER`: Your PostgreSQL user name, e.g. `postgres`
+- `PASSWORD`: The password for your PostgreSQL user
+- `HOST`: The host machine where your PostgreSQL server is running, e.g. `localhost`
+- `PORT`: The port where your PostgreSQL server is listening, e.g. `5432`
+
+Here's an example for what your connection URL might look like:
+
+```
+# .env
+DATABASE_URL="postgresql://postgres:randomwPassword42@localhost:5432/notesapi?schema=public"
+```
+
+Once you have configured the `DATABASE_URL` environment variable, you can run the following command to create a new database and a `Note` table (as defined in your [Prisma schema file](./prisma/schema.prisma)):
+
+```
+npx prisma migrate dev --name init --preview-feature
+```
+
+
+
+### 3. Run the app
+
+Run the app with this command:
+
+```
+npm start
+```
 
 Then open http://localhost:4000.
 
 The app won't work until you set up the database, as described below.
 
 <details>
-  <summary>Setup with Docker</summary>
+  <summary><strong>Alternative: </strong>Setup with Docker</summary>
   <p>You can also start dev build of the app by using docker-compose.</p>
   <p>Make sure you have docker and docker-compose installed then run:</p>
   <pre><code>docker-compose up</code></pre>
